@@ -1,0 +1,115 @@
+{% extends 'courses/base.html' %}
+{% load course_custom_tags %}
+{% block title %}
+Signup
+{% endblock %}
+
+{% block content %}
+
+<style>
+  /* Card Customization */
+  .card-custom {
+      border-radius: 12px;
+      border: 1px solid #e0e0e0;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card-custom:hover {
+      border: 2px solid black;
+      transform: translateY(-8px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  .card-img-top {
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+  }
+
+  .card-body {
+      padding: 1.5rem;
+  }
+
+  .card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+  }
+
+  .card-footer {
+      background-color: #f8f9fa;
+      border-top: 1px solid #e0e0e0;
+      padding: 0.5rem;
+  }
+
+  /* Button Styling */
+  .btn-custom {
+      background-color: #333;
+      color: #fff;
+      border-radius: 8px;
+      border: 1px solid #333;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      font-size: 1rem;
+      padding: 0.75rem 1.5rem;
+      text-align: center;
+      display: inline-block;
+  }
+
+  .btn-custom:hover {
+      background-color: #444;
+      transform: scale(1.05);
+  }
+
+  /* Page Title */
+  .display-4 {
+      font-family: 'Roboto', sans-serif;
+      color: #343a40;
+      font-weight: 700;
+  }
+
+  /* General Page Styling */
+  .container {
+      max-width: 1200px;
+  }
+
+  .row > .col-md-4 {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
+
+  .mb-4 {
+      margin-bottom: 1.5rem;
+  }
+
+  .my-4 {
+      margin: 2rem 0;
+  }
+</style>
+
+<div class="container mt-5">
+   <p class="display-4 text-center mb-4">My Courses</p>
+   <hr class="my-4">
+
+   <div class="row">
+      {% for uc in user_courses %}
+      <div class="col-md-4 mb-4">
+          <div class="card mx-auto card-custom">
+              <img class="card-img-top" src="{{uc.course.thumbnail.url}}" alt="Card image cap">
+              <div class="card-body">
+                  <h5 class="card-title">{{uc.course.name}}</h5>
+              </div>
+
+              <div class="card-footer p-0">
+                  <div class="row no-gutters">
+                      <div class="col">
+                          <a href="/course/{{uc.course.slug}}" class="btn btn-custom btn-block">Start Course</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

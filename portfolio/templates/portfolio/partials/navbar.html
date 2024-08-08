@@ -1,0 +1,86 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-black py-3 shadow-sm">
+  <div class="container">
+    <a class="navbar-brand fw-bold fst-italic logo" href="/">DG</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link nav-link-hover" href="/portfolio">Portfolio</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-link-hover" href="{% url 'blog:posts' %}">Blog</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link nav-link-hover" href="/">Course</a>
+        </li>
+        <li class="nav-item d-flex align-items-center">
+          <a class="btn btn-primary btn-sm btn-animate" href="{% static 'portfolio/resources/cv.pdf' %}" target="_blank">Download CV</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<style>
+  /* Logo animation */
+  .logo {
+    font-size: 2rem;
+    transition: transform 0.3s ease-in-out;
+  }
+  .logo:hover {
+    transform: scale(1.1) rotate(5deg);
+  }
+
+  /* Navbar link hover effects */
+  .nav-link-hover {
+    position: relative;
+    color: white;
+    transition: color 0.3s ease-in-out;
+  }
+  .nav-link-hover::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #007bff;
+    visibility: hidden;
+    transform: scaleX(0);
+    transition: all 0.3s ease-in-out;
+  }
+  .nav-link-hover:hover::after {
+    visibility: visible;
+    transform: scaleX(1);
+  }
+  .nav-link-hover:hover {
+    color: #007bff;
+  }
+
+  /* Button animation */
+  .btn-animate {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+  }
+  .btn-animate::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 300%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: skewX(-45deg);
+    transition: all 0.5s ease-in-out;
+    z-index: -1;
+  }
+  .btn-animate:hover::before {
+    left: 100%;
+  }
+</style>

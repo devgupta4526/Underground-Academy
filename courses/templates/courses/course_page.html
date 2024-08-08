@@ -1,0 +1,188 @@
+{% extends 'courses/base.html' %}
+{% load static %}
+{% load course_custom_tags %}
+
+{% block title %}
+Courses
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'courses/css/scrollbar.css' %}">
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'courses/js/course_page.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+<style>
+    /* Full-Width Container */
+    .container-fluid {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        padding: 1rem;
+    }
+
+    /* Card Styling */
+    .card {
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 1.5rem;
+    }
+
+    .card-body {
+        padding: 2rem;
+    }
+
+    /* Heading and Text Styling */
+    .card-title {
+        font-family: 'Roboto', sans-serif;
+        color: #333;
+        margin-bottom: 1rem;
+    }
+
+    .card-text {
+        font-size: 1rem;
+        color: #495057;
+    }
+
+    /* Video List Styling */
+    #video_list {
+        max-height: 500px; /* Adjust height as needed */
+        overflow-y: auto;
+    }
+
+    .active-video {
+        background-color: #000; /* Black background for selected item */
+        color: #fff; /* White text color for selected item */
+    }
+
+    .active-video-link {
+        color: #fff; /* White text color for selected link */
+        font-weight: 500;
+    }
+
+    .active-video-link:hover {
+        text-decoration: none;
+        color: #ddd; /* Light grey text color on hover for better readability */
+    }
+
+    .no-preview {
+        cursor: not-allowed;
+        color: #6c757d;
+    }
+
+    a {
+        color: #343a40;
+    }
+
+    a:hover {
+        text-decoration: none;
+    }
+
+    /* Flexbox Layout for Content */
+    .content-wrapper {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .video-container, .course-details, .prerequisite, .learnings {
+        margin-bottom: 2rem;
+    }
+
+    /* Responsive Styling */
+    @media (max-width: 768px) {
+        .col-3 {
+            display: none;
+        }
+
+        .col {
+            width: 100%;
+        }
+    }
+</style>
+
+
+<div class="container-fluid">
+    <div class="content-wrapper">
+        <div class="video-container">
+            <div class="card p-3">
+                <div class="row">
+                    <!-- YouTube Player -->
+                    <div class="col">
+                        <div class="mx-auto">
+                            <iframe id='player' class="mx-auto" width="100%" height="315"
+                                src="https://www.youtube.com/embed/{{ video.video_id }}" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen></iframe>
+                        </div>
+                    </div>
+
+                    <!-- Lecture List -->
+                    <div class="col-3">
+                        <ul id='video_list' class="list-group">
+                            {% is_enrolled request course as enrolled %}
+                            {% for v in videos %}
+                                <li class="list-group-item {% if v == video %} active-video {% endif %}">
+                                    <a class="
+                                        {% if not enrolled and not v.is_preview %} no-preview {% endif %}
+                                        {% if v == video %} active-video-link {% endif %}
+                                        " href="?lecture={{ v.serial_number }}">
+                                        {{ v }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Course Details -->
+        <div class="course-details">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ course.name }}</h5>
+                    <p class="card-text">{{ course.description }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Prerequisites -->
+        <div class="prerequisite">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Prerequisite</h5>
+                    <p class="card-text">
+                        <ol>
+                            {% for pre in course.prerequisite_set.all %}
+                                <li>{{ pre.description }}</li>
+                            {% endfor %}
+                        </ol>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Learnings -->
+        <div class="learnings">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Learnings</h5>
+                    <p class="card-text">
+                        <ol>
+                            {% for l in course.learning_set.all %}
+                                <li>{{ l.description }}</li>
+                            {% endfor %}
+                        </ol>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
